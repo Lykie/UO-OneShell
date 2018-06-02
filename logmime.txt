@@ -1,0 +1,1 @@
+'7z','at3','bgm','bin','bmp','cso','dax','fixer','folder','foldera','fpt','gif','html','htmlb','ini','iso','jpg','js','lua','lue','molde','mp3','mp32','mp4','mp4a','mtl','obj','pbp','pdf','pgf','pmf','png','pnga','prx','prxb','rar','smc','tar','ttf','txt','unknown','wav','xml','zip',
