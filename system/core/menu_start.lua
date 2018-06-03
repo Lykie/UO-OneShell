@@ -113,7 +113,7 @@ function menu_start.draw_apps()
 		menu_start.focus = 0
 	end
 end
-menu_start.avatar = kernel.loadimage("system/theme/avatar.jpg")
+menu_start.avatar = kernel.loadimage("system/theme/avatar.png")
 function menu_start.run()
 	draw.fillrect(5,5,470,238,desk.barcolor)
 	--8,8,

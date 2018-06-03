@@ -1,17 +1,5 @@
---[[
-	ONE SHELL - SimOS
-	Entorno de Ventanas Multitareas.
-	
-	Licenciado por Creative Commons Reconocimiento-CompartirIgual 4.0
-	http://creativecommons.org/licenses/by-sa/4.0/
-	
-	Modulo:	Driver Manager
-	Descripcion: Gestor de los iconos miniatura y funciones extra del desk, "escritorio".
-	Añadido soporte para swap btt accept y swap menu
-]]
-
 driver = {}
-function driver.run_low() -- Ejecutamos todo driver existente...
+function driver.run_low()
 	if __FILES_THREAD_STATE != 0 and __NET_THREAD_STATE != 0 then
 	draw.line(240,247,240,272,desk.linecolor)
 	elseif __FILES_THREAD_STATE != 0 or __NET_THREAD_STATE != 0 then
@@ -19,7 +7,6 @@ function driver.run_low() -- Ejecutamos todo driver existente...
 	elseif 	__FILES_THREAD_STATE == 0 and __NET_THREAD_STATE == 0 then
 	draw.line(285,247,285,272,desk.linecolor)
 	end
-	driver.unpack_download.run()
 	driver.usb_ftp.run()
 	driver.music.run()
 	driver.batt.run()
@@ -27,75 +14,10 @@ function driver.run_low() -- Ejecutamos todo driver existente...
 	driver.volume.run()
 end
 
-function driver.run_high() -- Ejecutamos todo driver existente...
+function driver.run_high()
 	driver.vol_bright.run()
 end
 
-driver.unpack_download = {
-	icon = kernel.loadimage("system/theme/desk/down.png"),
-}
-function driver.unpack_download.run()
-	-- ## Unpack ##
-	if __FILES_THREAD_STATE == 2 then -- esta descomprimiendo.
-		local x,y = 265,249
-		if __NET_THREAD_STATE != 0 then 
-			x -= 25
-		end
-		driver.unpack_download.icon:blit(x,249)
-		if not levelofunpack then levelofunpack = 0 end
-		levelofunpack = levelofunpack + 0.1
-		if levelofunpack > __FILES_THREAD_WRITTEN*21/__FILES_THREAD_SIZE then levelofunpack = 0 end
-		screen.clip(x,249,21,levelofunpack)--__FILES_THREAD_WRITTEN*21/__FILES_THREAD_SIZE
-		driver.unpack_download.icon:blittint(x,249,color.orange)
-		screen.clip()
-		if cursor.isOver(x,249,21,21) then
-			cursor.label("Unpack: "..math.floor((__FILES_THREAD_WRITTEN*100)/__FILES_THREAD_SIZE).."%")
-		end
-	elseif __FILES_THREAD_STATE == 1 then -- descarga terminada.
-		local x,y = 265,249
-		if __NET_THREAD_STATE != 0 then 
-			x -= 25
-		end
-		driver.unpack_download.icon:blittint(x,249,color.cyan)
-		if cursor.isOver(x,249,21,21) then
-			cursor.label("Unpack complete")
-			if not unpackcount then unpackcount = 0 end
-			unpackcount = unpackcount + 1
-			if unpackcount > 660 then unpackcount = nil levelofunpack = nil __FILES_THREAD_STATE = 0 end -- quitamos el mensaje, y borramos el contador.
-		end
-	end
-	
-	--## Descarga ##
-	if __NET_THREAD_STATE == 2 then -- esta descargando.
-		--__NET_THREAD_WRITTEN,__NET_THREAD_SIZE = 70,100
-		driver.unpack_download.icon:blit(265,249)
-		if not levelofdown then levelofdown = 0 end
-		levelofdown = levelofdown + 0.1
-		if levelofdown > __NET_THREAD_WRITTEN*21/__NET_THREAD_SIZE then levelofdown = 0 end
-		screen.clip(265,249,21,levelofdown)--__NET_THREAD_WRITTEN*21/__NET_THREAD_SIZE
-		driver.unpack_download.icon:blittint(265,249,color.green)
-		screen.clip()
-		if cursor.isOver(265,249,21,21) then
-			cursor.label("Download: "..math.floor((__NET_THREAD_WRITTEN*100)/__NET_THREAD_SIZE).."%")
-		end
-	elseif __NET_THREAD_STATE == 1 then -- descarga terminada.
-		driver.unpack_download.icon:blittint(265,249,color.green)
-		if cursor.isOver(265,249,21,21) then
-			cursor.label("Download complete")
-			if not downcount then downcount = 0 end
-			downcount = downcount + 1
-			if downcount > 660 then downcount = nil levelofdown = nil __NET_THREAD_STATE = 0 end -- quitamos el mensaje, y borramos el contador.
-		end
-	elseif __NET_THREAD_STATE == -1 then -- descarga error.
-		driver.unpack_download.icon:blittint(265,249,color.red)
-		if cursor.isOver(265,249,21,21) then
-			cursor.label("Download Error")
-			if not downcount then downcount = 0 end
-			downcount = downcount + 1
-			if downcount > 660 then downcount = nil levelofdown = nil __NET_THREAD_STATE = 0 end -- quitamos el mensaje, y borramos el contador.
-		end
-	end
-end
 driver.volume = {
 	icon = kernel.loadimage("system/theme/desk/audio.png",18,18)
 }
@@ -104,7 +26,7 @@ function driver.volume.run()
 		driver.volume.icon:blitsprite(369,250,0)
 	else
 		local level = hw.volume()
-		local frame = 0 -- sino entra en las condiciones entonces sera el frame 0(mute o nothing)
+		local frame = 0
 		if level > 0 and level <= 10 then
 			frame = 1
 		elseif level >= 10 and level <= 20 then
@@ -120,9 +42,9 @@ function driver.volume.run()
 		if buttons.menu then
 			local opciones = {
 				{txt = "Volume 0%", action = hw.volume, args = 0, state = true, overClose = true},
-				{txt = "Volume 25%", action = hw.volume, args = 7, state = true, overClose = true},
+				{txt = "Volume 24%", action = hw.volume, args = 7, state = true, overClose = true},
 				{txt = "Volume 50%", action = hw.volume, args = 15, state = true, overClose = true},
-				{txt = "Volume 75%", action = hw.volume, args = 23, state = true, overClose = true},
+				{txt = "Volume 77%", action = hw.volume, args = 23, state = true, overClose = true},
 				{txt = "Volume 100%", action = hw.volume, args = 30, state = true, overClose = true},
 			}
 			POPUP.setElements(opciones)
@@ -137,10 +59,10 @@ driver.wifi = {
 function driver.wifi.run()
 	if wlan.isconnected() then
 		if not driver.wifi.label then
-			if __SHELL_IS_VITA and not __SHELL_CFW_TNV then -- Añadido temporar :P
-				label.call("Connecting WiFi","Connecting to access point...",__LABEL_INFO)
+			if __SHELL_IS_VITA and not __SHELL_CFW_TNV then
+				label.call("Network","Connecting to access point...",__LABEL_INFO)
 			else
-				label.call("Connecting WiFi","Connecting to access point... "..wlan.over()..".",__LABEL_INFO)
+				label.call("Network","Connected to access point "..wlan.over()..".",__LABEL_INFO)
 			end
 			driver.wifi.label = true
 		end
@@ -157,41 +79,38 @@ function driver.wifi.run()
 		if buttons.menu then
 			local opciones = {}
 			
-			if ((__SHELL_CFW_TNV  and __SHELL_IS_VITA) or not __SHELL_IS_VITA) then -- Es un psp o una vita con TNV :P Usamos la autoconexion..
+			if ((__SHELL_CFW_TNV  and __SHELL_IS_VITA) or not __SHELL_IS_VITA) then
 				table.insert(opciones,{txt = "Enable WiFi", action = function(a) wlan.autoconnect(a[1],a[2]) end, args = {1,30}, state = true, overClose = true})
 				if wlan.autostatus() then
 					opciones[1].txt = "Disable WiFi"
 					opciones[1].args = {0,30}
-					wlan.disconnect() -- Revisar esto! (Pendiente si lo usamos o no!)
+					wlan.disconnect()
 				end
-			else -- es una vita, solo podemos pedir de nuevo acceso a la red manual...
+			else
 				table.insert(opciones,{txt = "Connected to WiFi", action = wlan.connect, args = nil, state = true, overClose = true})
 				if wlan.isconnected() then
 					opciones[1].txt = "Disconnected from WiFi"
-					opciones[1].action = wlan.disconnect -- Revisar esto! (Pendiente si lo usamos o no!)
+					opciones[1].action = wlan.disconnect
 				end
 			end
 			POPUP.setElements(opciones)
 			POPUP.activate()
 		end
-		if ((__SHELL_CFW_TNV  and __SHELL_IS_VITA) or not __SHELL_IS_VITA) then -- Es un psp o una vita con TNV :P
+		if ((__SHELL_CFW_TNV  and __SHELL_IS_VITA) or not __SHELL_IS_VITA) then
 			if wlan.isconnected() then
-				cursor.label("Internet access: "..wlan.over().." ".. wlan.strength() .."%")
+				cursor.label("Access Point: "..wlan.over().." ".. wlan.strength() .."%")
 			elseif wlan.autostatus() then
-				cursor.label("Searching.. No internet access")
+				cursor.label("Searching...")
 			else
-				cursor.label("No internet access")
+				cursor.label("No Signal")
 			end
 		else
 			if wlan.isconnected() then
-				cursor.label("Internet access - Signal: "..wlan.strength() .."%")
+				cursor.label("Signal Strength: "..wlan.strength() .."%")
 			else
-				cursor.label("No internet access")
+				cursor.label("No Signal")
 			end
 		end
-		cursor.animation(true)
-	else
-		cursor.animation(false)
 	end
 end
 driver.batt = {
@@ -203,18 +122,16 @@ driver.batt = {
 function driver.batt.run()
 	driver.batt.icon:blit(334,252)
 	local txt = "Battery: "
-	--if not porcentbatt then porcentbatt = 100 end
-	local porcentbatt = 0 -- default 0 %
-	local fullbatt = 0 -- default 0 pixeles
+	local porcentbatt = 0
+	local fullbatt = 0
 	if batt.exists() then
 		porcentbatt = batt.lifepercent()
 		fullbatt = porcentbatt / 10
 		txt = txt..porcentbatt.."%"
 	else
-		txt = txt.."not found"
+		txt = txt.."Removed"
 	end
 	if not levelofbatt then levelofbatt = 0 end
-	--screen.print(10,10,levelofbatt.." | "..fullbatt)
 	if levelofbatt < fullbatt-0.1 then
 		levelofbatt = levelofbatt + 0.1
 	elseif levelofbatt > fullbatt then
@@ -223,49 +140,33 @@ function driver.batt.run()
 	draw.fillrect(337,266-levelofbatt,4,levelofbatt,color.white)
 	if cursor.isOver(334,252,10,16) then
 		cursor.label(txt)
-		if buttons.menu then
-			local opciones = {
-				{txt = "Power Management", action = function () if porcentbatt == 100 then porcentbatt = 0 else porcentbatt = 100 end end, args = nil, state = true, overClose = true},
-			}
-			POPUP.setElements(opciones)
-			POPUP.activate()
-		end
 	end
 	if batt.low() and not driver.batt.is_low then
 		driver.batt.is_low = true
-		label.call("PSP Battery Low","Connect the charger as soon as possible.",__LABEL_ALERT)
+		label.call("Power Manager","Your battery is running low.",__LABEL_ALERT)
 		driver.batt.audio_alert = sound.load("system/sound/batt_more_low.wav")
 		driver.batt.audio_alert:play()
 	elseif not batt.low() and driver.batt.is_low then
 		driver.batt.is_low = false
 	end
 	if batt.charging() and not driver.batt.is_charging then
-		label.call("Charger detected.","Battery charging.")
+		label.call("Power Manager","Your battery is charging.")
 		driver.batt.is_charging = true
 	elseif not batt.charging() and driver.batt.is_charging then
 		driver.batt.is_charging = false
 	end
 end
--- Manager Player Music (Event´s)
+-- Music Player Management
 driver.music = {
 	icon = kernel.loadimage("system/theme/desk/sound.png"),
 	state = false,
 	sound = nil,
 	over = 0,
 }
-if not files.exists("ms0:/music/") then
-	files.mkdir("ms0:/music/")
+if not files.exists("ms0:/MUSIC/") then
+	files.mkdir("ms0:/MUSIC/")
 end
-driver.music.list = files.list("ms0:/music/")
---[[if #driver.music.list > 0 then
-	local soundfiles = {}
-	for i=1, #driver.music.list do
-		if driver.music.list[i].ext and driver.music.list[i].ext == "mp3" then
-			table.insert(soundfiles,driver.music.list[i])
-		end
-	end
-	driver.music.list = soundfiles
-end]]
+driver.music.list = files.list("ms0:/MUSIC/")
 driver.music.count = #driver.music.list
 function driver.music.run()
 	driver.music.icon:blit(311,251)
@@ -307,7 +208,7 @@ function driver.music.run()
 		end
 	end
 end
--- Manager Usb && FTP (Event´s)
+-- USB & FTP Management
 driver.usb_ftp = {
 	icon = kernel.loadimage("system/theme/desk/usb.png"),
 	isOnFTP = false,
@@ -326,11 +227,11 @@ function driver.usb_ftp.run()
 			draw.fillrect(290,254,14,8,color.new(10,156,10))
 		end
 	else
-		draw.fillrect(290,254,14,8,color.orange)--new(220,220,220,100))
+		draw.fillrect(290,254,14,8,color.orange)
 	end
 	driver.usb_ftp.icon:blit(288,253)
 	if cursor.isOver(288,253,18,14) then
-		cursor.label("Connections")
+		cursor.label("File Access")
 		if buttons.menu then
 			local opciones = {
 				{txt = "Enable USB", action = usb.mstick, args = nil, state = true, overClose = true},
@@ -350,8 +251,7 @@ function driver.usb_ftp.run()
 		end
 	end
 end
-
--- Manager Bright && Volume (Event)
+-- Volume and Brightness Management
 driver.vol_bright = {
 	ico_bright = kernel.loadimage("system/theme/brightness.png"), 
 	ico_vol = kernel.loadimage("system/theme/sound.png"),
@@ -384,17 +284,3 @@ function driver.vol_bright.run()
 		driver.vol_bright.alfa -= 3
 	end
 end
-	--[[ ## Code of download overthread ##
-	screen.print(240,10,"Velocidad de descarga: "..__NET_THREAD_VELOCITY.."Kb/s",0.7,color.white,color.gray,__ACENTER)
-	if cursor.isOver(288,253,20,20) then
-		if __NET_THREAD_STATE == 0 then
-			cursor.label("Presione eh iniciara el update")
-		elseif __NET_THREAD_STATE == 2 then--__NET_THREAD_VELOCITY
-			cursor.label("Descarga en progreso, "..math.floor((__NET_THREAD_WRITTEN*100)/__NET_THREAD_SIZE).."%")
-		elseif __NET_THREAD_STATE == -1 then
-			cursor.label("Ocurrio un error en la descarga.")
-		elseif __NET_THREAD_STATE == 1 then
-			cursor.label("La descarga ah terminado 100%")
-		end
-	end
-	--]]

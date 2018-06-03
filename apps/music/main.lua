@@ -1,14 +1,4 @@
---[[
-	ONE SHELL - SimOS
-	Entorno de Ventanas Multitareas.
-	
-	Licenciado por Creative Commons Reconocimiento-CompartirIgual 4.0
-	http://creativecommons.org/licenses/by-sa/4.0/
-	
-	Modulo:	App
-	Descripcion: Reproductor de audios
-]]
-app = sdk.newApp("Winamp - Powered your Play",color.new(64,64,64))
+app = sdk.newApp("Music Player",color.new(64,64,64))
 
 app.Now_Play_Name = ""
 app.datasound = nil
@@ -19,12 +9,11 @@ app.playlist = files.listfiles("ms0:/music/")
 app.overlist = 1
 if #app.playlist > 10 then app.lenlist = 10 else app.lenlist = #app.playlist end
 function app.init(path,input)
-	app.default_icon = image.load(path.."cover.png")--:resize(222,149)
+	app.default_icon = image.load(path.."cover.png")
 	app.actions = image.load(path.."actions.png",32,32)
 	app.audioicon = image.load(path.."audio.png")
 	app.loopicon = image.load(path.."loop.png")
 	app.loadsound(input)
-	--app.datasound:play()
 end
 
 function app.run(x,y)
@@ -32,7 +21,7 @@ function app.run(x,y)
 		if(i==app.overlist)then co = color.green else co = color.white end
 		screen.print(x+5,y+(15*i-1),app.playlist[i].name,0.6,co)
 	end
-	-- ## Dibujado de Cover ##
+	-- ## Drawn from Cover ##
 	draw.line(252,21,252,241,color.white)
 	
 	if app.infosound.cover then 
@@ -42,7 +31,7 @@ function app.run(x,y)
 	end
 	draw.line(252,171,475,171,color.white)
 	
-	-- ## Action & Dibujado de Play/Pause
+	-- ## Action & Drawn by Play/Pause
 	if cursor.isOver(347,210,32,32) then
 		draw.fillrect(347,210,32,32,color.shine)
 		if buttons.cross then
@@ -55,7 +44,7 @@ function app.run(x,y)
 		app.state = 0
 	end
 	app.actions:blitsprite(347,210,app.state)
-	-- Accion Next list
+	-- Next List Action
 	if cursor.isOver(379,210,32,32) then
 		draw.fillrect(379,210,32,32,color.shine)
 		if buttons.cross then
@@ -67,7 +56,7 @@ function app.run(x,y)
 		end
 	end
 	app.actions:blitsprite(379,210,4)
-	--Accion Prev List
+	--Previous List Action
 	if cursor.isOver(315,210,32,32) then
 		draw.fillrect(315,210,32,32,color.shine)
 		if buttons.cross then
@@ -79,7 +68,7 @@ function app.run(x,y)
 		end
 	end
 	app.actions:blitsprite(315,210,3)
-	--Set Volume
+	--Music Player Volume
 	if cursor.isOver(411,210,32,32) then
 		draw.fillrect(411,210,32,32,color.shine)
 		if buttons.cross then
@@ -95,7 +84,7 @@ function app.run(x,y)
 		end
 	end
 	app.audioicon:blit(411,210)
-	--Set Loop
+	--Looping
 	if app.datasound:looping() then
 		draw.fillrect(283,210,32,32,color.shine)
 	end

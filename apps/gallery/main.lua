@@ -8,7 +8,7 @@
 	Modulo:	App
 	Descripcion: Visor de Imagenes
 ]]
-app = sdk.newApp("Picture Viewer")
+app = sdk.newApp("Gallery")
 
 app.scaleimg = 50
 app.ximg = 240
@@ -17,7 +17,7 @@ app.inputpath = ""
 
 function app.init(path,input)
 	if input then
-		sdk.setTitleApp(app,files.nopath(input).." - Picture Viewer")
+		sdk.setTitleApp(app,files.nopath(input).." - Gallery")
 		app.inputpath = input
 		app.imgdata = image.load(input)--sdk.loadImage
 	else
@@ -75,10 +75,10 @@ function app.run(x,y)
 		draw.fillrect(x + 2,y + 2+25+25,27,23,color.shine)
 		if buttons.cross and app.imgdata then
 			local opciones = {
-				{txt = "Set a Background", action = function () desk.tmpback = image.copy(app.imgdata) cfg.set("theme","backpath",app.inputpath) end, args = nil, state = false, overClose = true},
-				{txt = "Edit Image", action = function () sdk.callApp("gimp",app.inputpath) end, args = nil, state = true, overClose = true},
+				{txt = "Set as Background", action = function () desk.tmpback = image.copy(app.imgdata) cfg.set("theme","backpath",app.inputpath) end, args = nil, state = false, overClose = true},
+				{txt = "Edit Image", action = function () sdk.callApp("paint",app.inputpath) end, args = nil, state = true, overClose = true},
 				{txt = "Reload Image", action = function () app.imgdata = image.load(app.inputpath) app.imgdata:center() end , args = nil, state = true, overClose = true},
-				{txt = "Open Location", action = function () sdk.callApp("id_filer",app.inputpath) end , args = nil, state = true, overClose = true},
+				{txt = "Open Location", action = function () sdk.callApp("filer",app.inputpath) end , args = nil, state = true, overClose = true},
 			}
 			opciones[1].state = app.imgdata:getrealw() == 480 and app.imgdata:getrealh() == 272
 			POPUP.setElements(opciones)

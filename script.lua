@@ -120,23 +120,6 @@ function onPowerEvent(event)
 		label.call("Return From Suspend","Device return of sleep mode, Resume Complete!")
 	end
 end
--- Ejecucion de reparaciones!
-if not files.exists("patch/") then
-	files.mkdir("patch/")
-end
-if files.exists("patch/patch.lua") then
-	local back = image.load("system/theme/recovery.png")
-	back:blit(0,0)
-	os.messagebox("El sistema a encontrado un parche","A continuacion se instalara el parche.\n\n* Un parche es un update ligero, cuya funcion es reparar algun bug o error en el Shell.")
-	back = nil
-	collectgarbage()
-	local not_err , msg = pcall(dofile,"patch/".. "patch.lua") -- proteccion de ejecucion.
-	if not not_err then
-		os.messagebox("A ocurrido un problema",msg)
-		--os.message(msg)
-	end
-end
-
 
 buttons.read() -- Leemos pulsaciones
 if buttons.held.r then dofile("system/core/recovery.lua") end -- Goto Recovery menu.

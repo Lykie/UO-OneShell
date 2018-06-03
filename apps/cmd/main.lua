@@ -1,19 +1,7 @@
---[[
-	ONE SHELL - SimOS
-	Entorno de Ventanas Multitareas.
-	
-	Licenciado por Creative Commons Reconocimiento-CompartirIgual 4.0
-	http://creativecommons.org/licenses/by-sa/4.0/
-	
-	Modulo:	App
-	Descripcion: Simbolo del Sistema "command prompt" (Terminal de Commandos).
-]]
-
 app = sdk.newApp("Command Prompt",color.new(0,0,0))
 function app.init(path,input)
 	app.buff = CONSOLE.new()
-	app.buff:print("Team ONElua - OneShell [Version "..__SHELL_VERSION.."] [SDK "..__SDK_VERSION.."]\n")
-	app.buff:print("2015 - Licensed by Creative Commons Attribution-ShareAlike 4.0\n")
+	app.buff:print("OneShell "..__SHELL_VERSION.." ("..__SDK_VERSION..")\n")
 	app.buff:print(__SHELL_NICK.."> ")
 	app.textfield = sdk.newTextField()
 	app.textfield:setw(sdk.w)
@@ -23,80 +11,43 @@ function app.init(path,input)
 end
 function app.run(x,y)
 	app.buff:draw()
-	--if buttons.cross and sdk.underAppCursor() then	end
 	app.textfield:draw()
 end
 function app.term()
 	
 end
-function app.event_field(c) -- Evento cuando sea positivo la entrada de texto sobre el textfield.
+function app.event_field(c)
 	app.buff:print(c.."\n"..app.dispacht(c).."\n")
 	app.buff:print(__SHELL_NICK.."> ")
 	app.textfield:txt("")
 end
--- ## Comandos ##
-app.commands = {} -- Contenedor
+-- ## Commands ##
+app.commands = {}
 function app.commands.recovery()
 	screen.clip()
 	dofile("system/core/recovery.lua")
-	screen.clip(5,21,470,220) -- Limitamos a dibujar en el area de ventana
-	return "Ok.."
-end
-function app.commands.r() -- temporal para test fast
-	screen.clip()
-	dofile("system/core/recovery.lua")
-	screen.clip(5,21,470,220) -- Limitamos a dibujar en el area de ventana
-	return "Ok.."
-end
-function app.commands.mkdir(path)
-	files.mkdir(path)
-	return "Ok.."
-end
-function app.commands.copy(src,dst)
-	if src and dst then
-		local res = files.copy(src,dst)
-		if res == 1 then
-			return "Ok.."
-		end
-	end
-	return "Error.."
-end
-function app.commands.move(src,dst)
-	if src and dst then
-		local res = files.move(src,dst)
-		if res == 1 then
-			return "Ok.."
-		end
-	end
-	return "Error.."
+	screen.clip(5,21,470,220)
 end
 function app.commands.cwd()
 	return files.cdir()
 end
-function app.commands.dir(path)
-	local now = files.cdir()
-	if path then
-		files.cdir(path)
-	end
-	return "Ok.. cwd - old: "..now.." now: "..files.cdir()
-end
 function app.commands.ip()
-	return wlan.getip() or "Unknown IP"
+	return wlan.getip() or "Wi-Fi is Disabled"
 end
 function app.commands.exit()
 	kernel.exit()
-	return "Exit to XMB..."
+	return "Returning to XMB..."
 end
 function app.commands.shutdown()
 	kernel.off()
-	return "Shutdown Console..."
+	return "Shutting down..."
 end
 function app.commands.suspend()
 	kernel.suspend()
-	return "Suspend Console..."
+	return "Entering Sleep Mode..."
 end
 function app.commands.help()
-	return "## List Of Available Command´s ##\nrecovery - enter to recovery mode\ncwd - get dir work\dir - get dir work\nip - get Adress wlan\nexit - goto xmb\nshutdown - shutdown console\nsuspend - suspend console\n## ##"
+	return "CMD built-in commands are:\ncwd - Show current directory\nexit - Return to XMB\nip - Show IP Address\nrecovery - Enter the Recovery Menu\nshutdown - Shutdown Console\nsuspend - Suspend Console"
 end
 function app.dispacht(c)
 	local tmp = string.explode(c," ")
@@ -112,7 +63,7 @@ function app.dispacht(c)
 	return "Unknown Command"
 end
 
-CONSOLE = {}	-- Tabla de consola
+CONSOLE = {}
 
 function CONSOLE.new()
 	local obj = {

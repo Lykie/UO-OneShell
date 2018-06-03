@@ -25,7 +25,7 @@ access_mgr.default = {
 	not_exist = kernel.loadimage("system/theme/def_aico_noexist.png"), -- Acceso Icon No found.
 	icon0unk = kernel.loadimage("system/theme/icon0unk.png"),
 	folder = kernel.loadimage("system/theme/folder.png"),
-	link = kernel.loadimage("system/theme/acess.png"),
+	link = kernel.loadimage("system/theme/shortcut.png"),
 	}
 access_mgr.default.icon0unk:resize(60,35)
 -- ## Constantes ##

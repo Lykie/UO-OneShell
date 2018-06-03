@@ -1,4 +1,4 @@
-app = sdk.newApp("Notepad Viewer")
+app = sdk.newApp("Text Viewer")
 app.data = {}
 
 function app.init(path,input)

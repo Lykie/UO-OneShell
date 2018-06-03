@@ -359,13 +359,6 @@ function sdk.runGame(path)
 	if ext == ".dax" and not __SHELL_SOPORT_DAX then
 		label.call("No Suport", "Your model not can lauch dax!")
 	end
-	if cfg.get("Boot","game",true) then
-		if not files.exists("ms0:/seplugins/") then files.mkdir("ms0:/seplugins/") end
-		if not files.exists("ms0:/seplugins/onelua_rdriver.prx") then files.copy("onelua_rdriver.prx","ms0:/seplugins/") end
-	else
-		if files.exists("ms0:/seplugins/onelua_rdriver.prx") then files.delete("ms0:/seplugins/onelua_rdriver.prx") end
-	end
-	game.launch(path)
 end
 
 ---
