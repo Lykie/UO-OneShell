@@ -175,7 +175,7 @@ if __SHELL_NEW_DEVICE then -- Es nuevo, mostramos la bienvenida.
 	label.call("Hello".." "..__SHELL_NICK.."!","Welcome to OneShell")
 end
 if __SHELL_DEBUG then -- Entramos en modo debug, mostramos el aviso.
-	label.call("Initiating Debug Mode", "This mode allows you to view extra information")
+	label.call("Debug Mode", "This mode allows you to view extra information")
 end
 
 --os.message(tostring(cfg.get("controls","menu")))
