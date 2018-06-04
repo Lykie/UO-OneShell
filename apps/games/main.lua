@@ -1,24 +1,8 @@
---[[
-	ONE SHELL - SimOS
-	Entorno de Ventanas Multitareas.
-	
-	Licenciado por Creative Commons Reconocimiento-CompartirIgual 4.0
-	http://creativecommons.org/licenses/by-sa/4.0/
-	
-	Modulo:	App
-	Descripcion: Lanzador de Aplicaciones (Homebrews/isos/cso)
-]]
-app = sdk.newApp("Launcher",color.new(27,64,92))
---[[
-	Modos:
-	0 Over list
-	1 Over title
-]]
+app = sdk.newApp("Game Launcher")
 app.mode = 0
 app.pic = nil
 app.icon = nil
 app.root = nil
-
 
 lang["menu"] = {
 "Play",
@@ -30,7 +14,8 @@ lang["categories"] = {
 "PS One",
 }
 function app.init(path)
-	app.keyscroll = app.attributes.index--app.fnt = font.load(path.."Roboto-Condensed.pgf")
+    	app.back = image.load(path.."back.png")
+	app.keyscroll = app.attributes.index
 	app.unk = image.load(path.."unk.png")
 	app.data = {
 	{},
@@ -39,17 +24,14 @@ function app.init(path)
 	{},
 	}
 	app.cat = 1
-	local listtemp = files.list("ms0:/iso/")
+	local listtemp = files.list("ms0:/ISO/")
 	for i=1,#listtemp do
 		if listtemp[i].ext and listtemp[i].ext == "iso" or listtemp[i].ext == "cso" then
 			local infotemp = game.info(listtemp[i].path)
 			table.insert(app.data[1],{region = infotemp.REGION,name = infotemp.TITLE,icon = game.geticon0(listtemp[i].path), path = listtemp[i].path})
 		end
-		--if listtemp[i].ext and listtemp[i].ext == "dax" then
-		--	table.insert(app.data[1],{region = "unk",name = files.nopath(listtemp[i].path):sub(1,-5),icon = nil, path = listtemp[i].path})
-		--end
 	end
-	local listtemp = files.listdirs("ms0:/psp/game/")
+	local listtemp = files.listdirs("ms0:/PSP/GAME")
 	for i=1,#listtemp do
 		if files.exists(listtemp[i].path.."/EBOOT.PBP") then
 			local infotemp = game.info(listtemp[i].path.."/EBOOT.PBP")
@@ -58,16 +40,17 @@ function app.init(path)
 	end
 	scroll.set(app.keyscroll,app.data[app.cat],16)
 end
+
 function app.draw_back(x,y)
-	draw.fillrect(5,20,313,20,color.new(0,0,0,100))
-	draw.fillrect(5,41,313,4,color.cyan)
+	draw.fillrect(5,20,313,21,color.new(0,0,0,100))
+	draw.fillrect(5,41,313,4,color.gray)
 	local over_cat = 0
 	for i=1,3 do
 		if cursor.isOver(x+6+((i-1)*100),y,100,20) then
 			over_cat = i
 		end
 		if i==app.cat then
-			draw.fillrect(x+((i-1)*107)-1,y,100,20,color.cyan)
+			draw.fillrect(x+((i-1)*107)-1,y,100,20,color.gray)
 		end
 		screen.print(x+8+((i-1)*110),y+3,lang["categories"][i])
 		
@@ -79,11 +62,8 @@ function app.draw_back(x,y)
 end
 
 function app.run(x,y)
-	--draw.fillrect(5,21,470,220,color.new(27,64,92))
-	
-	--app.bk:blit(5,21)
-	
 	if app.mode == 0 then
+		app.back:blit(x,y)
 		app.draw_back(x,y)
 		local over_opt = 0
 		if buttons.r then
@@ -98,7 +78,6 @@ function app.run(x,y)
 				app.icon = app.data[app.cat][over].icon
 				if not app.icon then
 					app.icon = app.unk
-					--app.unk:resize(144,80)
 				end
 				app.title = app.data[app.cat][over].name
 				app.root = app.data[app.cat][over].path
@@ -131,7 +110,7 @@ function app.run(x,y)
 		for i=1,2 do
 			if cursor.isOver(305+25,y+52+(25*(i-1))-5,140,25) then
 				over = i
-				draw.fillrect(305+25,y+55+(25*(i-1))-5,140,25,color.cyan)
+				draw.fillrect(305+25,y+55+(25*(i-1))-5,140,25,color.gray)
 			end
 			screen.print(315+25,y+52+(25*(i-1)),lang["menu"][i])
 		end
@@ -145,18 +124,16 @@ function app.run(x,y)
 			app.mode = 0
 		end
 	end
-	screen.print(x,y,#app.data[app.cat],0.7,color.red)
 end
 
 function app.term()
 end
--- Funciones extras ..
 function app.draw_Apps(x,y)
 	local i,len,pos = scroll[app.keyscroll].ini,scroll[app.keyscroll].lim,0
 	local sel = 0
 	while i<=len do
 		if cursor.isOver(7+(pos*94),y+21,90,50) then
-			draw.fillrect(9+(pos*94)-2,y+20,90,50+2,color.new(255,255,255,100))
+			draw.fillrect(8+(pos*94)-2,y+20,92,50+2,color.cyan)
 			sel = i
 		end
 		if app.data[app.cat][i].icon then	

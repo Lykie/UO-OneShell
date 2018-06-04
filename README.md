@@ -9,6 +9,6 @@ Either the kernel exploit needs to be removed, or the homebrew needs to be re-wr
 There are 9 apps included, and up to 16 are supported.
 There are 2 gadgets included, and up to 3 seem to be supported.
 Sticky Note supports up to 54 characters.
-Date is listed in DD/MM/YY format.
+Date is listed in MM/DD/YY format.
 Doing anything while listening to music slows the music down.
 Pressing Note takes a screenshot.
