@@ -1,32 +1,23 @@
 kernel.enableScreen(false)
---local path_to_core = "system/core/"
 kernel.include("cfg_manager.lua",cfg)
 
-recovery = {} -- Modulo recovery
+recovery = {}
 recovery.over = 1
 recovery.menu_principal = {
 	{name = "Enable USB",nametwo = "Disable USB",checking = usb.isactive,action = usb.mstick, state = true},
 	{name = "Enable AutoBoot",nametwo = "Disable AutoBoot",action = nil, state = true},
-	{name = "Config OneShell",nametwo = "Config OneShell",action = function () recovery.over = 1; recovery.options = recovery.menu_configs end , state = true},
-	{name = "Update OneShell",nametwo = "Disable USB",action = nil, state = true},
-	{name = "Patch OneShell",nametwo = "Disable USB",action = nil, state = true},
-	{name = "Restore OneShell",nametwo = "Disable USB",action = nil, state = true},
-	{name = "Uninstall OneShell",nametwo = "Disable USB",action = nil, state = true},
+	{name = "Enable Analog",nametwo = "Disable Analog",checking = function () return cfg.get("cursor","analog") end,action = function () cfg.set("cursor","analog",not cfg.get("cursor","analog")) end, state = true},
 	{name = "Restart Console",nametwo = "Disable USB",action = kernel.restart, state = true},
 	{name = "Suspend Console",nametwo = "Suspend Console",action = kernel.suspend, state = true},
-	{name = "Shutdown Console",nametwo = "Disable USB",action = kernel.off, state = true},
-	{name = "Exit to OneShell",nametwo = "Disable USB",action = function () recovery.isrun = false end, state = true},
-	{name = "Exit to XMB",nametwo = "Disable USB",action = kernel.exit, state = true},
-}
-recovery.menu_configs = {
-	{name = "Enable Analog",nametwo = "Disable Analog",checking = function () return cfg.get("cursor","analog") end,action = function () cfg.set("cursor","analog",not cfg.get("cursor","analog")) end, state = true},
-	{name = "Change Theme",action = nil, state = true},
+	{name = "Shutdown Console",nametwo = "Shutdown Console",action = kernel.off, state = true},
+	{name = "Return to OneShell",nametwo = "Return to OneShell",action = function () recovery.isrun = false end, state = true},
+	{name = "Return to XMB",nametwo = "Return to XMB",action = kernel.exit, state = true},
 }
 recovery.options = recovery.menu_principal
 recovery.last_options = recovery.menu_principal
 recovery.label = string.rep(" ",20).."OneShell - Multitasking Graphical Environment"..string.rep(" ",20)
 recovery.x = 20
-recovery.back = image.load("system/theme/recovery.png")
+recovery.back = image.load("system/images/boot/recovery.png")
 recovery.isrun = true
 while recovery.isrun do
 	buttons.read()
@@ -42,8 +33,6 @@ while recovery.isrun do
 		recovery.over = #recovery.options
 	end
 	recovery.back:blit(0,0)
-	--recovery.back:blit(40,40)
-	--recovery.back:blitadd(40,40,60)
 	screen.print(240,5,"== Recovery Menu ==",0.7,color.white,0x0,__ACENTER)
 	for i = 1,#recovery.options do
 		if recovery.over == i then
@@ -70,7 +59,6 @@ while recovery.isrun do
 	screen.flip()
 	if buttons.circle then
 		recovery.options = recovery.last_options
-		--break 
 	end
 end
 buttons.read()

@@ -9,8 +9,8 @@
 	]]
 
 app_mgr = {-- Modulo app manager
-	defico = kernel.loadimage("system/theme/def_tico.png"), -- ## Default Mini Icon Windows App
-	defbico = kernel.loadimage("system/theme/def_bico.png"),-- ## Default Mini Icon Desk App
+	defico = kernel.loadimage("system/images/menu/default16.png"), -- ## Default Mini Icon Windows App
+	defbico = kernel.loadimage("system/images/menu/default25.png"),-- ## Default Mini Icon Desk App
 	tmp = {}, -- ## Almacen temporal al crear aplicaciones (No se utilizo)
 	data = {}, -- ## Almacen Real de aplicaciones {code, y sus atributos}
 	manager = {}, -- ## Registrador de aplicaciones Abiertas y index
@@ -25,9 +25,9 @@ root_to_apps = "apps/" -- Obligatorio, lo cambiare luego a ms0 por ello
 function app_mgr.load(path,id) -- carga el codigo y lo inserta al shell
 	
 	local root = path.."main.lua" -- ruta comun al main de una aplicacion
-	if not files.exists(root) then box.new(lang.get("app_mgr","no_main_t","La app no esta completa"),lang.get("app_mgr","no_main_d","No se logro encontrar su main o codigo.")); return end -- comprobamos exista antes que nada
+	if not files.exists(root) then box.new("Program incomplete."); return end -- comprobamos exista antes que nada
 	local numofapps = app_mgr.open -- numero de apps abiertas o cargadas
-	if numofapps >= max_open_apps then box.new(lang.get("app_mgr","app_max_t","Imposible iniciar aplicacion"),lang.get("app_mgr","app_max_d","Numero maximo de aplicaciones abiertas alcanzado.")); return end
+	if numofapps >= max_open_apps then box.new("The program can not be started."); return end
 	local idindex = app_mgr.getfreeindex()
 	local indextoset = "id0"..idindex -- ok pues si llegamos aqui se cargara en este index
 	---box.new("test",indextoset)
@@ -46,7 +46,7 @@ function app_mgr.load(path,id) -- carga el codigo y lo inserta al shell
 		return
 	end
 	-- Bien ahora ya esta el code bien en el contenedor del shell, ahora, debemos completar campos y registrarlo.
-	if not app_mgr.data[indextoset] then box.new(lang.get("app_mgr","app_chunk_t","La app no responde!"),lang.get("app_mgr","app_chunk_d","Verifique este completa la aplicación, no se envio estado al núcleo.")) return end -- quiere decir algun error al ejecutar el chunk
+	if not app_mgr.data[indextoset] then box.new("Program not responding.") return end -- quiere decir algun error al ejecutar el chunk
 	
 	-- Comenzamos registros de atributos :)
 	app_mgr.data[indextoset].attributes.id = id -- id; realmente esto pendiente
@@ -71,7 +71,7 @@ function app_mgr.load(path,id) -- carga el codigo y lo inserta al shell
 	app_mgr.open = app_mgr.open + 1 -- sumamos 1 a los abiertos.
 	return true
 end
-loaddesk = image.load("system/theme/wait.png")
+loaddesk = image.load("system/images/cursor/wait.png")
 loaddesk:center()
 function app_mgr.create(identificador,args) -- regista la app esto en si la llama a load
 	if identificador == nil then return	end -- Mejor Prevenir que se llame de alguna manera erronea
@@ -83,7 +83,7 @@ function app_mgr.create(identificador,args) -- regista la app esto en si la llam
 	for i=0,255,11 do
 		nowbuff:blit(0,0)
 		loaddesk:blit(240,136,i)
-		screen.print(240,160,"Loading Application",0.7,color.white:a(i),color.black:a(i),512)
+		screen.print(240,160,"Initializing Program",0.7,color.white:a(i),color.black:a(i),512)
 		screen.flip()
 	end
 	--oldbuff:blit(0,0)
@@ -92,13 +92,13 @@ function app_mgr.create(identificador,args) -- regista la app esto en si la llam
 	for i=255,0,-11 do
 		nowbuff:blit(0,0)
 		loaddesk:blit(240,136,i)
-		screen.print(240,160,"Loading Application",0.7,color.white:a(i),color.black:a(i),512)
+		screen.print(240,160,"Initializing Program",0.7,color.white:a(i),color.black:a(i),512)
 		screen.flip()
 	end
 	oldbuff:blit(0,0)
 	if not not_err then -- error :(
 		local args = string.explode(msg,":")
-		box.new("Error Chunk App",{"ID: "..tostring(app_mgr.data[app_mgr.manager[app_mgr.focus].index].attributes.id),"Name: "..tostring(app_mgr.data[app_mgr.manager[app_mgr.focus].index].attributes.title),"Line: "..tostring(args[2]),"Warning: "..wordwrap(tostring(args[3]),250,0.6)})
+		box.new("Program Error",{"ID: "..tostring(app_mgr.data[app_mgr.manager[app_mgr.focus].index].attributes.id),"Name: "..tostring(app_mgr.data[app_mgr.manager[app_mgr.focus].index].attributes.title),"Line: "..tostring(args[2]),"Warning: "..wordwrap(tostring(args[3]),250,0.6)})
 		--box.new("Error Over App "..app_mgr.manager[app_mgr.focus].index, msg)
 		app_mgr.free(app_mgr.focus)
 		--msg = string.explode(msg,":")
@@ -130,7 +130,7 @@ function app_mgr.free(focus) -- Libera y cierra una aplicacion enfocada :D
 	--Llamamos a la funcion de cierre.
 	local err , msg = pcall(app_mgr.data[app_mgr.manager[focus].index].term) -- proteccion de ejecucion.
 	if not err then
-		box.new("Error Over App "..app_mgr.manager[focus].index, msg)
+		box.new("Program Error"..app_mgr.manager[focus].index, msg)
 	end
 	table.remove(desk.apps,app_mgr.manager[focus].bar_index)
 	if focus < 5 then
@@ -159,8 +159,8 @@ end -- table.remove(desk.apps,i)
 
 window = {-- Modulo Windows 
 	--back = kernel.loadimage("system/theme/window/window.png"),
-	close = kernel.loadimage("system/theme/window/Closed.png"),
-	min = kernel.loadimage("system/theme/window/Minimized.png"),
+	close = kernel.loadimage("system/images/window/close.png"),
+	min = kernel.loadimage("system/images/window/minimize.png"),
 	--btts = kernel.loadimage("system/theme/window/buttons.png"),
 	mode = 1, -- 2 Suma / 1 Nada  / 0 Resta
 	size = 0, -- 0 - 100 porcentaje
@@ -202,7 +202,7 @@ function app_mgr.running(pack,x,y) -- ejecuta el code de la app
 	if not not_err then
 		amg.mode2d(1)
 		local args = string.explode(msg,":")
-		box.new("Error Chunk App",{"ID: "..pack.attributes.id,"Name: "..pack.attributes.title,"Line: "..tostring(args[2]),"Warning: "..wordwrap(tostring(args[3]),250,0.6)})
+		box.new("Program Error",{"ID: "..pack.attributes.id,"Name: "..pack.attributes.title,"Line: "..tostring(args[2]),"Warning: "..wordwrap(tostring(args[3]),250,0.6)})
 		app_mgr.free(app_mgr.focus)
 	end
 	screen.clip() -- quitamos limitacion

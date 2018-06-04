@@ -115,9 +115,9 @@ end
 
 function onPowerEvent(event)
 	if event == __POWER_EVENT_SUSPEND then -- Suspend
-		label.call("Into a Suspend","Device intro a sleep mode")
+		label.call("Suspend","Device enters sleep mode")
 	elseif event == __POWER_EVENT_RESUME then -- Resume
-		label.call("Return From Suspend","Device return of sleep mode, Resume Complete!")
+		label.call("Wakeup","Device exits sleep mode")
 	end
 end
 
@@ -172,10 +172,10 @@ end
 
 --os.message(tostring(cfg.get("controls","menu")))
 if __SHELL_NEW_DEVICE then -- Es nuevo, mostramos la bienvenida.
-	label.call(lang.get("labels","hello","Hola").." "..__SHELL_NICK.."!",lang.get("labels","welcome","Hola"))
+	label.call("Hello".." "..__SHELL_NICK.."!","Welcome to OneShell")
 end
 if __SHELL_DEBUG then -- Entramos en modo debug, mostramos el aviso.
-	label.call(lang.get("labels","over_debug","Iniciado en modo debug."), lang.get("labels","info_debug","Este modo, permite ver informacion extra."))
+	label.call("Initiating Debug Mode", "This mode allows you to view extra information")
 end
 
 --os.message(tostring(cfg.get("controls","menu")))

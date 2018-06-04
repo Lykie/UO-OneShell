@@ -80,7 +80,7 @@ iosk.charTable[2] = {
 }
 
 function iosk.loadImage(name)
-	local path = "system/theme/iosk/"
+	local path = "system/images/iosk/"
 	return image.load(path..name)
 end
 

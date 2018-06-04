@@ -12,12 +12,12 @@
 cfg = {} -- Modulo
 
 function cfg.load()
-	cfg.data = ini.load("oneshell.ini")
+	cfg.data = ini.load("config/settings.ini")
 end
 
 function cfg.save()
 	if cfg.data then
-		ini.save("oneshell.ini",cfg.data)
+		ini.save("config/settings.ini",cfg.data)
 	end
 end
 

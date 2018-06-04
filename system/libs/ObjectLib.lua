@@ -62,7 +62,7 @@ function OBJECT.get(id,args)			-- Retorna una instancia del objeto que coincida 
 	local instance = data.chunk()
 	
 	if instance == nil then
-		error("El objeto "..id.." no retorna ningun valor al final del script")
+		error("Object "..id.." does not return value at the end of the script.")
 		return
 	end
 	

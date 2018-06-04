@@ -12,3 +12,13 @@ Sticky Note supports up to 54 characters.
 Date is listed in MM/DD/YY format.
 Doing anything while listening to music slows the music down.
 Pressing Note takes a screenshot.
+
+# Bugs
+Not having an MP3 ms0:/music crashes the Music Player
+The "Lock" option does nothing and will most likely be removed
+Disabling WiFi then Enabling it results in "Connected to access point Searching" being displayed
+
+# Unsure Bugs
+Either large MP3s, or MP3 Covers crash the Music Player
+Only MP3s seem to work, despite OGG and others being listed (under filer)
+Audio files with 48.000 KHz may slow down

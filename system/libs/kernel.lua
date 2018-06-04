@@ -15,8 +15,8 @@ kernel.Corrupted = false -- Valor indicador de Sistema Corrupto.
 kernel.imageprotect = image.new(1,1,color.white) -- Para proteccion del shell :D
 
 kernel.loadscr = {-- Configuramos la screen boot.
-	back = image.load("system/theme/boot/back.png"), -- imagen de fondo
-	ani = image.load("system/theme/boot/ani.png"), -- Animacion de giro loading
+	back = image.load("system/images/boot/startup.png"), -- imagen de fondo
+	ani = image.load("system/images/boot/loading.png"), -- Animacion de giro loading
 	angle = 0, -- Angulo de giro de anim
 	label = "",
 	fx = 0
@@ -66,7 +66,7 @@ function kernel.loadsound(path)
 		return sound.load(path)
 	else
 		kernel.Corrupted = true
-		os.message("Error al cargar,\n"..path)
+		os.message("Error Loading,\n"..path)
 	end
 end
 function kernel.loadimage(path,x,y)
@@ -79,7 +79,7 @@ function kernel.loadimage(path,x,y)
 		end
 	else
 		kernel.Corrupted = true
-		os.message("Error al cargar,\n"..path.."\nSe cargara una img de seguridad (Respaldo), permitiendo continuar aun que no garantiza 100 % funcionalidad")
+		os.message("Error Loading,\n"..path.."\nIt will load a backup image, allowing to continue even if it does not guarantee 100% functionality")
 		return kernel.imageprotect
 	end
 end
@@ -109,7 +109,7 @@ function kernel.dofile(path)
 		return dofile(path)
 	else 
 		kernel.Corrupted = true
-		os.message("Error al cargar,\n"..path)
+		os.message("Error Loading,\n"..path)
 	end
 end
 function kernel.loadmod(path,pass)
@@ -235,7 +235,7 @@ function wordwrap(text,width,w)--Ajusta un string pasado como argumento y retorn
   	return out                            
 end
 function string.explode(str, div) -- Crea una tabla apartir de particiones en patrones ("a,b,c",",") = {a,b,c}
-    assert(type(str) == "string" and type(div) == "string", "invalid arguments")
+    assert(type(str) == "string" and type(div) == "string", "Invalid Arguments")
     local o = {}
     while true do
         local pos1,pos2 = str:find(div)
@@ -415,11 +415,11 @@ end
 -- requiere el archivo box.png
 box = {} -- Unidad llamada box
 box.isinit = false -- no se ah iniciado? no se puede utilizar :D
-box.lng = {{"X: Okay","O: Cancel"},{"X: Accepter","O: Annuler"},{"X: Aceptar","O: Cancelar"}}
+box.lng = {"X: Okay","O: Cancel"}
 box.running = false -- para utilizar en la api
 function box.init(path) -- iniciamos la libreria :D, mas que nada cargar la img 
 	if files.exists(path) then
-		box.back = kernel.loadimage(path.."box.png")
+		box.back = kernel.loadimage(path.."desktop/box.png")
 		if box.back then
 			box.isinit = true
 		end
@@ -451,14 +451,6 @@ function box.new(title,txt,cent) -- crea una caja de texto y la muestra
 	end
 	scroll.set(995,txt,5)
 	local capt = screen.buffertoimage()
-	local indexLang = 1 -- default eng
-	local SysLang = os.language()
-	if SysLang == "FRENCH" then
-		indexLang = 2
-	elseif SysLang == "SPANISH" then
-		indexLang = 3
-	end
-	
 	box.ine(capt)
 	box.running = true
 	local response = false
@@ -572,7 +564,7 @@ function files.compile(path) -- crea un .lue script compilado de otro
 	files.delete(fn)
 	-- Obtengo los distintos resultados de error
 	if not err then
-		if string.find(str, "unexpected symbol near char(27)") then return -1 else return str end
+		if string.find(str, "Unexpected symbol near char(27)") then return -1 else return str end
 	else return 0 end
 end
 -- # Manipulacion de archivos ini #
@@ -709,7 +701,7 @@ function files.compress_size(path)
 end
 
 function takeshot(id)--files.cdir():sub(1,5)
-	local root = files.cdir():sub(1,5).."picture/"
+	local root = files.cdir():sub(1,5).."PICTURE/"
 	files.mkdir(root)
 	root=root..id.."/"
 	files.mkdir(root)

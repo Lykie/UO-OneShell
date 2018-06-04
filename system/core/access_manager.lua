@@ -21,11 +21,11 @@ access_mgr = { -- Modulo Manager de accesos de escritorio.
 } 
 
 access_mgr.default = {
-	access = kernel.loadimage("system/theme/def_aico.png"), -- Acceso Icon Default.
-	not_exist = kernel.loadimage("system/theme/def_aico_noexist.png"), -- Acceso Icon No found.
-	icon0unk = kernel.loadimage("system/theme/icon0unk.png"),
-	folder = kernel.loadimage("system/theme/folder.png"),
-	link = kernel.loadimage("system/theme/shortcut.png"),
+	access = kernel.loadimage("system/images/menu/default40.png"), -- Acceso Icon Default.
+	not_exist = kernel.loadimage("system/images/menu/notfound.png"), -- Acceso Icon No found.
+	icon0unk = kernel.loadimage("system/images/menu/icon0unk.png"),
+	folder = kernel.loadimage("system/images/mimes/folder.png"),
+	link = kernel.loadimage("system/images/desktop/shortcut.png"),
 	}
 access_mgr.default.icon0unk:resize(60,35)
 -- ## Constantes ##
@@ -35,10 +35,10 @@ __DESKACCESSFOLDER = 3 -- Accesso a una carpeta, abrir con navegador.
 __DESKACCESSGAME = 4 -- Accesso a un juego (iso,cso,pbp), ejecutar.
 
 function access_mgr.load()-- Carga desde la base de datos los accesos.
-	access_mgr.data = ini.load("access.ini")
+	access_mgr.data = ini.load("config/desktop.ini")
 end
 function access_mgr.save()-- Guarda a la base de datos los accesos.
-	ini.save("access.ini",access_mgr.data)-- Solucion temporal a los userdata
+	ini.save("config/desktop.ini",access_mgr.data)-- Solucion temporal a los userdata
 end
 
 function access_mgr.add(name,id_o_path) -- Añade un acceso al desk (data es una tabla con los campos de un acceso).
@@ -120,7 +120,7 @@ end
 
 function access_mgr.init()-- Carga los accesos.
 	--access_mgr.load()
-	local buff = ini.load("access.ini")
+	local buff = ini.load("config/desktop.ini")
 	--access_mgr.len = #access_mgr.buffer
 	for i=1, #buff do -- Barrido de Matrix
 		access_mgr.add(buff[i].title, buff[i].id or buff[i].path)
@@ -182,13 +182,13 @@ function access_mgr.run(index) -- Trata de ejecutar un acceso segun su tipo.
 		app_mgr.create(access_mgr.data[index].id) -- Creamos la app segun su id, y creamos la ventana nueva.
 	elseif access_mgr.data[index].type == __DESKACCESSGAME then -- Es un App externa (PBP | ISO | CSO)
 		if files.exists(access_mgr.data[index].path) then -- Existe?
-			if box.new(lang.get("access_mgr","run_ext_app_t","Desea ejecutar una aplicación externa?"),lang.get("access_mgr","run_ext_app_d","Se cerraran todas las aplicaciónes y saldra del shell.")) then -- La ejecutamos?
+			if box.new("Do you want to run an external application?") then -- La ejecutamos?
 				
 				--game.launch(
 				sdk.runGame(access_mgr.data[index].path)
 			end
 		else -- No la encontramos damos alerta
-			box.new(lang.get("access_mgr","not_found_t","El archivo no existe!"),lang.get("access_mgr","not_found_d","Se intento ejecutar, pero no se encontro el archivo en la ruta indicada."))
+			box.new("File not found.")
 		end
 	elseif access_mgr.data[index].type == __DESKACCESSFILE then -- Es un Archivo, Intentar ejecutar segun su tipo o abrir en explorer
 		local ext = string.sub(access_mgr.data[index].path,-4,-1):lower()
@@ -197,7 +197,7 @@ function access_mgr.run(index) -- Trata de ejecutar un acceso segun su tipo.
 		elseif ext and ext == ".pmf" then
 			pmf.run(access_mgr.data[index].path)
 		elseif ext and ext == ".zip" or ext == ".rar" then
-			app_mgr.create("winrar",access_mgr.data[index].path)
+			app_mgr.create("archive",access_mgr.data[index].path)
 		else
 			app_mgr.create("filer",access_mgr.data[index].path)
 		end
@@ -209,11 +209,11 @@ end
 
 function access_mgr.options(index) -- Opciones del Menu Pop Sobre un acceso.
 	local opciones = {
-		{txt = lang.get("access_pop","execute","Ejecutar"), action = access_mgr.run, args = index, state = true, overClose = true},
-		{txt = lang.get("access_pop","location","Abrir Ubicacion"), action = app_mgr.create, args = {"filer",access_mgr.data[index].path}, state = true, overClose = true},
-		{txt = lang.get("access_pop","rename","Renombrar Acceso"), action = access_mgr.rename, args = index, state = true, overClose = true},
-		{txt = lang.get("access_pop","remove","Eliminar Acceso"), action = access_mgr.remove, args = index, state = true, overClose = true},
-		{txt = lang.get("access_pop","move","Mover Acceso"), action = nil, args = nil, state = false, overClose = true},
+		{txt = "Execute", action = access_mgr.run, args = index, state = true, overClose = true},
+		{txt = "Open Location", action = app_mgr.create, args = {"filer",access_mgr.data[index].path}, state = true, overClose = true},
+		{txt = "Rename Shortcut", action = access_mgr.rename, args = index, state = true, overClose = true},
+		{txt = "Delete Shortcut", action = access_mgr.remove, args = index, state = true, overClose = true},
+		{txt = "Move Shortcut", action = nil, args = nil, state = false, overClose = true},
 		}
 	if access_mgr.data[index].type == __DESKACCESSAPP then	opciones[2].state = false end
 	POPUP.setElements(opciones)
@@ -283,12 +283,12 @@ function access_mgr.draw()
 			draw.fillrect(x, y, w, h, color.shine); draw.rect(x, y, w, h, color.white)
 			oneover = i -- ok hubo al menos una coincidencia la parseamos a oneover
 			if access_mgr.data[i].type == __DESKACCESSAPP then
-				cursor.label(lang.get("access_mgr","execute","Ejecutar")..': "'..access_mgr.data[i].title ..'"')
+				cursor.label("Ejecutar"..': "'..access_mgr.data[i].title ..'"')
 			else -- Es Un juego o file..
 				if access_mgr.exists[i] then -- Existe..
-					cursor.label('Ruta: "'.. access_mgr.data[i].path ..'"')
+					cursor.label('Link to: "'.. access_mgr.data[i].path ..'"')
 				else -- No encontrado..
-					cursor.label(lang.get("access_mgr","root_not_found",'Destino no encontrado.'))
+					cursor.label("Destination not found.")
 				end
 			end
 		end

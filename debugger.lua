@@ -75,9 +75,9 @@ function onDebug(msg) -- OneShell screen debug
 			scroll.down("shellbug")
 		end
 	end
-	local dbg_bk = image.load("system/theme/debugback.png")--image.load("system/theme/DebugScreen.png")
-	local dbg_kbd = image.load("system/theme/OneOSK.png",120,120)
-	local dbg_kbd_kb = image.load("system/theme/OneOSKbk.png")
+	local dbg_bk = image.load("system/images/boot/debug.png")--image.load("system/theme/DebugScreen.png")
+	local dbg_kbd = image.load("system/images/boot/OneOSK.png",120,120)
+	local dbg_kbd_kb = image.load("system/images/boot/OneOSKbk.png")
 	local x_path,xdetail = 3,3
 	local ch = 0
 	local time = timer.new()

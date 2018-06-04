@@ -35,7 +35,7 @@ end
 -- ## Categoria: extensiones de entorno ##
 function sdk.newApp(title,backCol) -- crea un objeto aplicacion.
 	local MyObjApp = dofile("system/obj/app.lua") -- cargamos el modelo de aplicacion.
-	if not MyObjApp then box.new("Ocurrio un error","No se pudo crear la aplicacion") return end
+	if not MyObjApp then box.new("Something went wrong","The application can not be created") return end
 	MyObjApp.attributes.title = title
 	MyObjApp.attributes.backColor = backCol
 	--MyObjApp.attributes.multiOpen = multi
@@ -50,7 +50,7 @@ end
 -- ## Categoria: extension de aplicaciones ##
 function sdk.newButtonImg(x,y,img,desc,btt,func)
 	if type(img) == "string" then img = image.load(img) end
-	if not img then box.new("Hubo un error con la creacion de un boton icon","") return end
+	if not img then box.new("There was an error with the creation of a button icon","") return end
 	--img:center()
 	local obj = {x = x, y = y, w = img:getw(), h = img:geth(), ico = img, key = btt or "cross", act = func, desc = desc or ""}
 	function obj:xy(x,y)
@@ -104,8 +104,8 @@ function sdk.newButton(x,y,w,h,txt,desc,btt,func)
 end
 sdk.src = {}
 sdk.src.Tf = {
-	simple = image.load("system/theme/textfield/default.png"),
-	focus = image.load("system/theme/textfield/focus.png"),
+	simple = image.load("system/images/textfield/default.png"),
+	focus = image.load("system/images/textfield/focus.png"),
 }
 function sdk.newTextField()
 	local obj = {
@@ -411,7 +411,7 @@ end
 end]]
 
 
-sdk.ui ={scrollBar = kernel.loadimage("system/sdk/scrollbar.png")}
+sdk.ui ={scrollBar = kernel.loadimage("system/images/boot/scrollbar.png")}
 
 
 function sdk.textSetWide(txt,space,size)
@@ -448,7 +448,7 @@ function sdk.mime.load(path)
 	end
 end
 
-sdk.mime.load("system/theme/mimes/")
+sdk.mime.load("system/images/mimes/")
 
 function sdk.mime.get() -- acceso a las img :D
 	

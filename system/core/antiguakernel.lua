@@ -1,15 +1,3 @@
---[[
-==	Libreria Kernel
-==	Descripcion:
-==	Esta nos permite un control de funciones de carga, tales a prueba de errores y con una pantalla de carga,
-==	Ademas Nos brinda Algunas funciones que nos ayudan a la hora de simplificar!
-==	Creada Por:
-==	David Nuñez A. David.nunezaguilera.131@gmail.com
-==	Version 1.0 -- 29/01/2015
-==	Modificada Por:
-==	Equipo OneShell para la utilizacion en el entorno.
-==	version 2.0 -- Pendiente
-]]
 kernel = {}
 kernel.Corrupted = false
 if not color.white then	color.loadpalette()	end
@@ -20,7 +8,7 @@ function kernel.setloadscreen(back)
 end
 function kernel.loadscreen(txt)
 	if not kernel.imgload then
-		kernel.imgload = image.load("loader.png")
+		kernel.imgload = image.load("boot/loading.png")
 	end
 	if kernel.backloadscreen then
 		kernel.backloadscreen:blit(0,0)
@@ -34,7 +22,7 @@ end
 screen.print(40,254,"Loading... "..txt,0.7,color.white,color.black)
 screen.flip()
 end
--- Dibuja un splash de imagen en pantalla
+-- Draw a Splash Screen Image
 function kernel.splash(path,tiempo)
 	local imagen = kernel.loadimage(path)
 	
@@ -44,7 +32,7 @@ function kernel.splash(path,tiempo)
 		screen.flip()
 	end
 
-	os.delay(tiempo)	-- Detiene el tiempo en milisegundos (Requiere el nativeCore.lua de fishell)
+	os.delay(tiempo)
 
 	for i = 0,255,4 do
 		alfa = 255 - i
@@ -83,8 +71,6 @@ function kernel.dofile(path)
 	end
 end
 function kernel.fadeout(img)
-	--Checar si con esto soluciono problemas
-	--screen.flip()
 	local capt = img or screen.toimage()
 	local textura = image.new(480,272,color.new(0,0,0))
 	for i = 0,255,11 do
@@ -95,12 +81,9 @@ function kernel.fadeout(img)
 return capt
 end
 function kernel.fadein(img)
-	--Checar si con esto soluciono problemas
-	--screen.flip()
 	local capt = img or screen.toimage()
 	local textura = image.new(480,272,color.new(0,0,0))
 	for i = 255,0,-11 do
-		--textura:blit(0,0,255)
 		capt:blit(0,0,i)
 		screen.flip()
 	end	
@@ -112,28 +95,24 @@ function kernel.exit()
 end
 function kernel.message(modo,msn_titulo,msn_texto)
 	if modo == 3 then
-	--Retorna true/false segun la eleccion
 	msn_icono = Question
 	elseif modo == 1 then 
 	msn_icono = Warning
 	elseif modo == 2 then
 	msn_icono = img_update
 	end
-	if mensaje == nil then dofile("system/mensajes.lua") end
-	return mensaje.print(modo,msn_titulo,msn_icono,msn_texto,nil)
-	--mensaje.free(true) Libera todo lo relacionado con mensajes
 end
 function kernel.roundsize(bytes)
 	local size = "B"	
-	if bytes > 1* 1024*1024*1024 then -- GB
+	if bytes > 1* 1024*1024*1024 then
 		bytes = bytes/ 1024/1024/1024
-		size = "Gb"
-	elseif bytes > 1*1024*1024 then --MB
+		size = "GB"
+	elseif bytes > 1*1024*1024 then
 		bytes = bytes/1024/1024
-		size = "Mb"
-	elseif bytes > 1*1024 then --KB
+		size = "MB"
+	elseif bytes > 1*1024 then
 		bytes = bytes/1024
-		size = "Kb"
+		size = "KB"
 	else 
 		bytes = bytes
 		size = "B"
@@ -141,10 +120,10 @@ function kernel.roundsize(bytes)
 	return string.format("%.2f"..size,bytes)
 end
 function loading()
-kernel.loadscreen("unknow")
+kernel.loadscreen("Unknown")
 end
 
---- Encripta texto basandose en su llave
+--- "Encrypt text based on your key"
 function kernel.encrypt(texto,llave)		
 	if texto == nil or llave == nil then return end
 	
@@ -159,7 +138,7 @@ function kernel.encrypt(texto,llave)
 	return result;
 end 
 
---- Desencripta texto basandose en su llave
+--- "Decrypt text based on your key"
 function kernel.desencrypt(codigo,llave)	
 	if codigo == nil or llave == nil then return end
 	
@@ -174,16 +153,16 @@ function kernel.desencrypt(codigo,llave)
 	return result;
 end
 
--- Protege archivos cifrando a hex y luego encrypt con pass
+-- "Protects files encrypting to hex and then encrypt with password"
 function kernel.filesprotect(txt,pass)
 	return kernel.encrypt(kernel.txt2hex(txt),pass)
 end
--- DesProtege archivos descifrando a dec y luego desencrypt con pass
+-- "Unprotect files decrypting to dec and then decrypt with password"
 function kernel.filesunprotect(txt,pass)
 	return kernel.hex2txt(kernel.desencrypt(txt,pass))
 end
 
--- Escribe un texto en la ruta especificada
+-- Write text in the specified path
 function kernel.filesWrite(path,contenido,modo)
 	
 	local archivo = io.open(path,modo);
@@ -195,7 +174,7 @@ function kernel.filesWrite(path,contenido,modo)
 	archivo:close();
 end
 
--- Lee la linea seleccionada del archivo seleccionada (o todas las lineas si no se especifica una en especial)
+-- Read the selected line of the selected file (or all lines if a special one is not specified)
 function kernel.filesRead(path,index)
 	if files.exists(path) == nil then return end
 	local contenido = {}
@@ -211,8 +190,8 @@ function kernel.filesRead(path,index)
 	end
 	
 end
---- Funcion Extra que escala una imagen en su porcentage pasado como argumento
-function kernel.imageScale(imagen,porcent) 	-- retorna w,h
+--- Extra function that scales an image in its past percentage as an argument
+function kernel.imageScale(imagen,porcent)
 	if imagen == nil then return end
 
 	if porcent == nil or porcent == 100 then
@@ -224,8 +203,6 @@ function kernel.imageScale(imagen,porcent) 	-- retorna w,h
 
 	local rh = math.ceil((h / 100) * porcent)
 	local rw = math.ceil((w / 100) * porcent)
-
-	--imagen:resize(rw,rh)
 
 	return rw,rh
 end
@@ -297,9 +274,8 @@ function kernel.Bin2Int(bin)
 return _num
 end
 
--- facilidades de conversión hexadecimal a binario y viceversa
-
-function sumBin(str) -- suma 1 a un número binario en string, añade bits en caso de ser necesario
+-- Hexadecimal to Binary conversion facilities and vice versa
+function sumBin(str) -- Add 1 to a binary number in string, add bits if necessary
     newstr = ""
     llevo = 1
     start = #str
@@ -331,7 +307,7 @@ function sumBin(str) -- suma 1 a un número binario en string, añade bits en ca
     return newstr
 end
 
-function hex2bin(hexstr) -- de hexa a binario
+function hex2bin(hexstr)
 	binstr = ""
 	for i=1,#hexstr do
 		binstr = binstr..tblH2B[hexstr:sub(i,i):upper()]
@@ -339,7 +315,7 @@ function hex2bin(hexstr) -- de hexa a binario
 	return binstr
 end
 
-function bin2hex(binstr) -- de binario a hexa
+function bin2hex(binstr)
 	hexstr = ""
 	p4 = #binstr/4
 
@@ -354,7 +330,7 @@ function bin2hex(binstr) -- de binario a hexa
 	return hexstr
 end
 
-function inithexlib() -- generar tablas de conversión
+function inithexlib()
 	tblH2B = {}
 	tblB2H = {}
 	hex = "0123456789ABCDEF"
@@ -366,7 +342,7 @@ function inithexlib() -- generar tablas de conversión
 	end
 end
 
-inithexlib() -- inicializar HexLib
+inithexlib()
 
 function kernel.txt2hex(str)
 	local tmp = ""

@@ -3,7 +3,7 @@
 screen_saver_init = false
 function  screen.saver()
 	if screen_saver_init == false then -- inicializa los parametros
-		screen_saver_donut = model3d.load("system/theme/torus.obj")
+		screen_saver_donut = model3d.load("system/images/screensaver/torus.obj")
 		amg.typelight(1,__DIRECTIONAL)
 		amg.colorlight(1,color.new(250,250,250),color.new(90,90,90),color.new(250,250,250))
 		amg.poslight(1,{0,1,1})
@@ -22,7 +22,7 @@ function  screen.saver()
 		amg.light(1,1);
 		amg.fog(8,17,color.black)	
 		--Donuts
-		if type(screen_saver_donut) == "string" then amg.mode2d(1) box.new("error en screen saver",tostring(screen_saver_donut)) screen_saver_init = false amg.mode2d(0) return end
+		if type(screen_saver_donut) == "string" then amg.mode2d(1) box.new("Screensaver Error",tostring(screen_saver_donut)) screen_saver_init = false amg.mode2d(0) return end
 		model3d.rotation(screen_saver_donut,1,{screen_saver_x,screen_saver_y,screen_saver_z})
 		model3d.render(screen_saver_donut,1)
 		amg.fog()		

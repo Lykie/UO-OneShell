@@ -19,7 +19,7 @@ function driver.run_high()
 end
 
 driver.volume = {
-	icon = kernel.loadimage("system/theme/desk/audio.png",18,18)
+	icon = kernel.loadimage("system/images/desktop/audio.png",18,18)
 }
 function driver.volume.run()
 	if hw.getmute() == 1 then
@@ -53,7 +53,7 @@ function driver.volume.run()
 	end
 end
 driver.wifi = {
-	icon = kernel.loadimage("system/theme/desk/wifi.png",22,22),
+	icon = kernel.loadimage("system/images/desktop/wifi.png",22,22),
 	label = false
 }
 function driver.wifi.run()
@@ -114,7 +114,7 @@ function driver.wifi.run()
 	end
 end
 driver.batt = {
-	icon = kernel.loadimage("system/theme/desk/batt.png"),
+	icon = kernel.loadimage("system/images/desktop/battery.png"),
 	is_charging = false,
 	is_low = false,
 	audio_alert = nil
@@ -158,7 +158,7 @@ function driver.batt.run()
 end
 -- Music Player Management
 driver.music = {
-	icon = kernel.loadimage("system/theme/desk/sound.png"),
+	icon = kernel.loadimage("system/images/desktop/music.png"),
 	state = false,
 	sound = nil,
 	over = 0,
@@ -210,7 +210,7 @@ function driver.music.run()
 end
 -- USB & FTP Management
 driver.usb_ftp = {
-	icon = kernel.loadimage("system/theme/desk/usb.png"),
+	icon = kernel.loadimage("system/images/desktop/usb.png"),
 	isOnFTP = false,
 }
 function driver.usb_ftp.run()
@@ -253,8 +253,8 @@ function driver.usb_ftp.run()
 end
 -- Volume and Brightness Management
 driver.vol_bright = {
-	ico_bright = kernel.loadimage("system/theme/brightness.png"), 
-	ico_vol = kernel.loadimage("system/theme/sound.png"),
+	ico_bright = kernel.loadimage("system/images/desktop/brightness.png"), 
+	ico_vol = kernel.loadimage("system/images/desktop/volume.png"),
 	alfa = 0,
 	mode = 0,	
 }

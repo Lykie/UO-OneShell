@@ -16,9 +16,9 @@ menu_start = { -- modulo "Menu Inicio"
 	leng = 0,
 	apps = {},
 	default = {
-		access = kernel.loadimage("system/theme/def_aico.png"), -- Acceso Icon Default.
-		not_exist = kernel.loadimage("system/theme/def_aico_noexist.png"), -- Acceso Icon No found.
-		icon0unk = kernel.loadimage("system/theme/icon0unk.png"),
+		access = kernel.loadimage("system/images/menu/default40.png"), -- Acceso Icon Default.
+		not_exist = kernel.loadimage("system/images/menu/notfound.png"), -- Acceso Icon No found.
+		icon0unk = kernel.loadimage("system/images/menu/icon0unk.png"),
 	},
 }
 function menu_start.add(name,id_o_path) -- Añade un acceso al desk (data es una tabla con los campos de un acceso).
@@ -40,7 +40,7 @@ function menu_start.add(name,id_o_path) -- Añade un acceso al desk (data es una
 		table.insert(menu_start.apps,tmp)
 	end
 end
-menu_start.data = ini.load("apps.ini")
+menu_start.data = ini.load("config/apps.ini")
 menu_start.leng = #menu_start.data
 for i=1,menu_start.leng do
 	menu_start.add(menu_start.data[i].title,menu_start.data[i].id or menu_start.data[i].path)
@@ -66,7 +66,7 @@ function menu_start.draw_apps()
 			draw.fillrect(x, y, w, h, color.shine); draw.rect(x, y, w, h, color.white)
 			oneover = i -- ok hubo al menos una coincidencia la parseamos a oneover
 			--if menu_start.apps[i].type == __DESKACCESSAPP then
-				cursor.label(lang.get("menu_start","execute","Ejecutar")..': "'.. menu_start.apps[i].title ..'"')
+				cursor.label("Execute"..': "'.. menu_start.apps[i].title ..'"')
 			--end
 		end
 		if menu_start.apps[i].icon then
@@ -96,11 +96,11 @@ function menu_start.draw_apps()
 		opt_show = true
 		menu_start.focus = oneover
 		local opciones = {
-			{txt = lang.get("menu_start_pop","execute","Ejecutar"), action = app_mgr.create, args = menu_start.data[menu_start.focus].id, state = true, overClose = true},
+			{txt = "Execute", action = app_mgr.create, args = menu_start.data[menu_start.focus].id, state = true, overClose = true},
 			--{txt = "Abrir Ubicacion", action = app_mgr.create, args = {"id_filer",access_mgr.data[index].path}, state = true, overClose = true},
 			--{txt = "Renombrar Acceso", action = access_mgr.rename, args = index, state = true, overClose = true},
 			--{txt = "Eliminar Acceso", action = access_mgr.remove, args = index, state = true, overClose = true},
-			{txt = lang.get("menu_start_pop","new_access","Crear acceso directo"), action = function (argc)  access_mgr.create(menu_start.data[menu_start.focus].title,menu_start.data[menu_start.focus].id) end, args = menu_start.data[menu_start.focus], state = true, overClose = true},
+			{txt = "Create Shortcut", action = function (argc)  access_mgr.create(menu_start.data[menu_start.focus].title,menu_start.data[menu_start.focus].id) end, args = menu_start.data[menu_start.focus], state = true, overClose = true},
 		}
 		POPUP.setElements(opciones)
 		POPUP.activate()
@@ -113,11 +113,11 @@ function menu_start.draw_apps()
 		menu_start.focus = 0
 	end
 end
-menu_start.avatar = kernel.loadimage("system/theme/avatar.png")
+menu_start.avatar = kernel.loadimage("system/images/menu/avatar.png")
 function menu_start.run()
 	draw.fillrect(5,5,470,238,desk.barcolor)
 	--8,8,
-	screen.print(470,230,lang.get("menu_start","title","Menu Inicio"),0.7,color.white,color.black,__ARIGHT)
+	screen.print(470,230,"Start Menu",0.7,color.white,color.black,__ARIGHT)
 	desk.power:blit(443,5)
 	if cursor.isOver(370,37,100,100) then
 		cursor.set("option")
@@ -125,7 +125,7 @@ function menu_start.run()
 		--draw.rect(443,5,32,32,color.new(255,255,255))
 		if buttons.accept then
 			local opciones = {
-				{txt = "Change Nick", action = function() local txt = iosk.init("New Nick","");	if txt then __SHELL_NICK = txt; cfg.set("os","nick",__SHELL_NICK) end end, args = nil, state = true, overClose = true},
+				{txt = "Change Username", action = function() local txt = iosk.init("New Username","");	if txt then __SHELL_NICK = txt; cfg.set("os","nick",__SHELL_NICK) end end, args = nil, state = true, overClose = true},
 				{txt = "Change Avatar", action = nil, args = nil, state = false, overClose = true},
 			}
 			POPUP.setElements(opciones)

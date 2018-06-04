@@ -25,7 +25,7 @@ end
 
 function lang.save()
 	if lang.data then
-		ini.save("oneshell.ini",lang.data)
+		ini.save("config/settings.ini",lang.data)
 	end
 end
 

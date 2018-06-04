@@ -10,8 +10,8 @@
 ]]
 
 cursor = {
-	img = kernel.loadimage("system/theme/cursor.png",30,30),
-	ani_frame = kernel.loadimage("system/theme/cursor_anims.png",20,20),
+	img = kernel.loadimage("system/images/cursor/cursor.png",30,30),
+	ani_frame = kernel.loadimage("system/images/cursor/cursor_anims.png",20,20),
 	x = 480/2, -- Punto X
 	y = 272/2, -- Punto Y
 	a = 255, -- Alfa Blit

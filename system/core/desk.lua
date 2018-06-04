@@ -2,11 +2,10 @@ desk = {}
 desk.apps = {}
 desk.open = 0
 desk.state = 1
-desk.imenu = kernel.loadimage("system/theme/desk/menu.png")
-desk.power = kernel.loadimage("system/theme/desk/power.png")
-desk.unrar = kernel.loadimage("system/theme/desk/unpack.png")
+desk.imenu = kernel.loadimage("system/images/desktop/menu.png")
+desk.power = kernel.loadimage("system/images/desktop/power.png")
 
-__DEFBACKPATH = "system/theme/back_00.png"
+__DEFBACKPATH = "system/images/wallpaper/wallpaper_1.png"
 local rootto = __DEFBACKPATH
 	if files.exists(cfg.get("theme","backpath")) then
 		rootto = cfg.get("theme","backpath")
@@ -100,7 +99,7 @@ function desk.drawback()
 		end
 	end
 end
-desk.randombacks = {"system/theme/back_00.png","system/theme/back_01.png","system/theme/back_02.png","system/theme/back_03.png","system/theme/back_04.png","system/theme/back_05.png"}
+desk.randombacks = {"system/images/wallpaper/wallpaper_1.png","system/images/wallpaper/wallpaper_2.png","system/images/wallpaper/wallpaper_3.png","system/images/wallpaper/wallpaper_4.png","system/images/wallpaper/wallpaper_5.png"}
 function desk.setback(root)
 	math.randomseed(os.clock())
 	desk.tmpback = image.load(desk.randombacks[math.random(1,#desk.randombacks)])
@@ -209,8 +208,8 @@ function desk.menu()
 	if cursor.isOver(0,0,480,247) and POPUP.state() == false and buttons.menu then
 		access_mgr.focus = 0
 		POPUP.setElements({
-		{txt = "Change Wallpaper", action = desk.setback, args = nil, state = true, overClose = false},
-		{txt = "Change Window Border", action = function () window.theme += 1; if window.theme > 4 then window.theme = 0 end end, args = nil, state = true, overClose = false},
+		{txt = "Random Wallpaper", action = desk.setback, args = nil, state = true, overClose = false},
+		{txt = "Random Window Border", action = function () window.theme += 1; if window.theme > 4 then window.theme = 0 end end, args = nil, state = true, overClose = false},
 		})
 		POPUP.activate()
 	end
@@ -223,9 +222,6 @@ function power.menu()
 		{txt = "Shutdown", action = kernel.off, args = nil, state = true, overClose = true},
 		{txt = "Return to XMB", action = kernel.exit, args = nil, state = true, overClose = true},
 	}
-	if not __SHELL_LOCK_SCR then
-		table.insert(opciones,1,{txt = "Lock", action = function () __SHELL_LOCK_SCR = true end, args = nil, state = true, overClose = true})	
-	end
 	POPUP.setElements(opciones)
 	POPUP.activate()
 end

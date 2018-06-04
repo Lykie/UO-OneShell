@@ -45,8 +45,8 @@ kernel.include("drivers.lua")
 println("Desktop")
 kernel.include("desk.lua")
 
-println("Source Dev Kit (sdk)")
-kernel.dofile("system/sdk/1shell.lua")
+println("Source Developer Kit")
+kernel.dofile("system/core/sdk.lua")
 
 println("Access Manager")
 kernel.include("access_manager.lua")
@@ -77,7 +77,7 @@ kernel.lib("lib_wave.lua")
 MyWave = wave.init("system/theme/wave.png")]]
 
 println("Library Box")
-box.init("system/theme/") -- inicia la libreria box mensajes! :D
+box.init("system/images/") -- inicia la libreria box mensajes! :D
 
 println("Gadgets")
 gadget_mgr.loadall()
