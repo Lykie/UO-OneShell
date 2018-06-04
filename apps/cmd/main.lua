@@ -27,7 +27,7 @@ function app.commands.recovery()
 	screen.clip()
 	dofile("system/core/recovery.lua")
 	screen.clip(5,21,470,220)
-	return
+	return "Launching Recovery..."
 end
 function app.commands.cwd()
 	return files.cdir()
