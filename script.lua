@@ -19,7 +19,6 @@
 	Mil y un detalles :D
 	]]
 
-power.event(0)
 os.cpu(333) -- Set CPU as Max Value
 
 -- ## Error Manager "Debugger" ## :D
@@ -137,19 +136,19 @@ end
 if cfg.get("os","mac") == nil then
 	__SHELL_NEW_DEVICE = true -- claro que es nuevo :P no tenia el config de esto
 else
-	__SHELL_NEW_DEVICE = cfg.get("os","mac") != __SHELL_MAC
+	__SHELL_NEW_DEVICE = cfg.get("os","mac") ~= __SHELL_MAC
 end
 if __SHELL_NEW_DEVICE then -- Si, es nuevo, actualizamos el config
 	cfg.set("os","mac",__SHELL_MAC)
 end
 -- Get Nick "USERNAME"
-if cfg.get("os","nick") != nil and not __SHELL_NEW_DEVICE then
+if cfg.get("os","nick") ~= nil and not __SHELL_NEW_DEVICE then
 	__SHELL_NICK = cfg.get("os","nick")
 else
 	cfg.set("os","nick",__SHELL_NICK)
 end
 -- Get Pass "PASSWORD"
-if cfg.get("os","pass") != nil and not __SHELL_NEW_DEVICE then
+if cfg.get("os","pass") ~= nil and not __SHELL_NEW_DEVICE then
 	__SHELL_PASS = cfg.get("os","pass")
 else
 	cfg.set("os","pass",__SHELL_PASS)

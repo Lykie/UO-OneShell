@@ -295,7 +295,7 @@ function access_mgr.draw()
 		if access_mgr.icon[i] then
 			access_mgr.icon[i]:blit(x+(w/2),y+((h-10)/2))
 		end
-		if access_mgr.data[i].type != __DESKACCESSAPP then
+		if access_mgr.data[i].type ~= __DESKACCESSAPP then
 			access_mgr.default.link:resize(10,10)
 			access_mgr.default.link:blit(x+(w/2)-30,y+((h-10)/2)+8)
 			--access_mgr.default.link:blit(x+(w/2)-(access_mgr.icon[i]:getw()/2),y+((h-10)/2))--+(access_mgr.icon[i]:geth()/2))
@@ -307,7 +307,7 @@ function access_mgr.draw()
 			desk.xscrollaccess = screen.print(desk.xscrollaccess,y+h-15,access_mgr.data[i].title,0.6,color.white,color.black,__SSEESAW,40)
 		else]]
 			--screen.clip(x+5,y+h-15,w-10,h)
-		--if oneover != 0 and access_mgr.focus != 0 then
+		--if oneover ~= 0 and access_mgr.focus ~= 0 then
 			--screen.print(x+(w/2),y+h-15,access_mgr.data[i].name,0.6,color.white,color.black,__ACENTER)
 		--else
 			screen.print(x+(w/2),y+h-15,access_mgr.text[i],0.6,color.white,color.black,__ACENTER)
@@ -323,17 +323,17 @@ function access_mgr.draw()
 		end
 	end
 	
-	if buttons.held.accept and access_mgr.focus != 0 then
+	if buttons.held.accept and access_mgr.focus ~= 0 then
 		local mx,my = cursor.motion()
 		access_mgr.position[access_mgr.focus].x += mx
 		access_mgr.position[access_mgr.focus].y += my
 		--oneover = 0
 	end
 	
-	--[[if buttons.released.cross and access_mgr.focus != 0 then
+	--[[if buttons.released.cross and access_mgr.focus ~= 0 then
 		access_mgr.ajustXY(access_mgr.data[access_mgr.focus])
 	end]]
-	if buttons.accept and oneover != 0 and access_mgr.focus == oneover  then -- sobre alguno, y que no sea cero xD
+	if buttons.accept and oneover ~= 0 and access_mgr.focus == oneover  then -- sobre alguno, y que no sea cero xD
 		access_mgr.run(access_mgr.focus)
 		access_mgr.focus = 0
 		oneover = 0

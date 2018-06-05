@@ -125,7 +125,7 @@ function app.run(x,y)
 				app.icons["unknown"]:blit(x+(w/2),y+((h-10)/2))
 			end
 			if i == app.focus[1] and ho == app.focus[2] and app.list[i][ho].title then
-				if math.floor(app.xscroll) != x+3 then
+				if math.floor(app.xscroll) ~= x+3 then
 				app.xscroll = x+3--+(w/2)+(w/2)
 				end
 				app.xscroll = screen.print(app.xscroll,y+h-15,app.list[i][ho].title,0.6,color.white,color.black,__SLEFT,70)
@@ -147,7 +147,7 @@ function app.run(x,y)
 	end
 	if buttons.cross and sdk.underAppCursor() and POPUP.activado == false and (app.focus[1] ~= oneover[1] or app.focus[2] ~= oneover[2]) then
 		app.focus = oneover
-	elseif buttons.cross and  oneover[1] ~= 0 and oneover[2] != 0 and app.focus[1] == oneover[1] and app.focus[2] == oneover[2] then
+	elseif buttons.cross and  oneover[1] ~= 0 and oneover[2] ~= 0 and app.focus[1] == oneover[1] and app.focus[2] == oneover[2] then
 		if not app.list[app.focus[1]][app.focus[2]].size then
 			app.refresh(app.list[app.focus[1]][app.focus[2]].path.."/")
 			app.focus[1] = 0
@@ -176,7 +176,7 @@ function app.run(x,y)
 			end
 		end
 	end
-	if buttons.triangle and  oneover[1] ~= 0 and oneover[2] != 0  then
+	if buttons.triangle and  oneover[1] ~= 0 and oneover[2] ~= 0  then
 		app.focus[1] = oneover[1] 
 		app.focus[2] = oneover[2]
 		local pathToF = app.list[app.focus[1]][app.focus[2]].path
@@ -211,7 +211,7 @@ function app.run(x,y)
 			{txt = "New Folder", action = function (path) local txt = sdk.iosk("","Name of Folder"); if txt then files.mkdir(path..txt) app.refresh() end end, args = app.ruta, state = true, overClose = true},
 		}
 		
-		if sdk.clipaction != 0 then
+		if sdk.clipaction ~= 0 then
 			local ftmp = nil
 			if sdk.clipaction == __CLIP_COPY then
 				ftmp = function (path) files.copy(sdk.clipboard,path) sdk.clipaction = 0; sdk.clipboard=""; app.refresh() end

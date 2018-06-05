@@ -40,7 +40,7 @@ function cursor.enable(mode) -- Enable/Disable el cursor.
 	cursor.hold(not mode)
 end
 function cursor.hold(mode) -- Disable/Enable movimiento del cursor.
-	if mode != nil then
+	if mode ~= nil then
 		cursor.holding = mode
 	end
 	return cursor.holding
@@ -196,7 +196,7 @@ function cursor.controls()
 		cursor.despX = cursor.x - lastX
 		cursor.despY = cursor.y - lastY
 		
-		if cursor.despX != 0 or cursor.despY != 0 then -- Hubo movimiento :P
+		if cursor.despX ~= 0 or cursor.despY ~= 0 then -- Hubo movimiento :P
 			cursor.moved = true
 		end
 	end
@@ -220,10 +220,10 @@ function check_Mouse()
 			
 			cursor.x += dxtemp
 			cursor.y += dytemp
-			if dxtemp != 0 then
+			if dxtemp ~= 0 then
 				cursor.despX = dxtemp
 			end
-			if dytemp != 0 then
+			if dytemp ~= 0 then
 				cursor.despY = dytemp
 			end
 			

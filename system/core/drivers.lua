@@ -1,8 +1,8 @@
 driver = {}
 function driver.run_low()
-	if __FILES_THREAD_STATE != 0 and __NET_THREAD_STATE != 0 then
+	if __FILES_THREAD_STATE ~= 0 and __NET_THREAD_STATE ~= 0 then
 	draw.line(240,247,240,272,desk.linecolor)
-	elseif __FILES_THREAD_STATE != 0 or __NET_THREAD_STATE != 0 then
+	elseif __FILES_THREAD_STATE ~= 0 or __NET_THREAD_STATE ~= 0 then
 	draw.line(265,247,265,272,desk.linecolor)
 	elseif 	__FILES_THREAD_STATE == 0 and __NET_THREAD_STATE == 0 then
 	draw.line(285,247,285,272,desk.linecolor)

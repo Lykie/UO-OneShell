@@ -24,7 +24,7 @@ end
 function cfg.get(sect,key,defval)
 	if cfg.data then
 		if cfg.data[sect] then
-			if cfg.data[sect][key] != nil then
+			if cfg.data[sect][key] ~= nil then
 				return cfg.data[sect][key]
 			end
 		end

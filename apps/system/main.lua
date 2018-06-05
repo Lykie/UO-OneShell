@@ -51,7 +51,7 @@ function app.run(x,y)
 		end
 	end
 	if oneover ~= 0 and app.focus == oneover and buttons.accept then sdk.callApp("filer",app.roots[app.focus]) end
-	if oneover ~= 0 and app.focus != oneover and buttons.accept then app.focus = oneover end
+	if oneover ~= 0 and app.focus ~= oneover and buttons.accept then app.focus = oneover end
 	if cursor.isOver(5,145,155+70,55) then
 		draw.fillrect(5,145,155+70,55, color.shine); draw.rect(5,145,155+70,55, color.white)
 		if buttons.accept then

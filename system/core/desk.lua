@@ -163,7 +163,7 @@ function desk.drawbottombar()
 						{txt = "Close", action = function (index) app_mgr.free(desk.apps[index].index) end, args = i, state = true, overClose = false},
 						{txt = "Minimize", action = function () desk.state = __DESKOVERNOTHING end, args = i, state = true, overClose = false},
 						}
-					if desk.state == __DESKOVERNOTHING or app_mgr.focus != desk.apps[i].index then
+					if desk.state == __DESKOVERNOTHING or app_mgr.focus ~= desk.apps[i].index then
 						opciones[2].txt = "Maximize"
 						opciones[2].action = function (index) app_mgr.focus = desk.apps[index].index; desk.state = __DESKOVERAPP end
 					end
